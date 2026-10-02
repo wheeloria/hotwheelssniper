@@ -13,7 +13,7 @@ export default function App() {
   const fetchData = async (isManual = false) => {
     if (isManual) setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/status');
+      const res = await fetch('https://hotwheelssniperbackend.onrender.com/api/status');
       const json = await res.json();
       setData(json);
     } catch (e) {
