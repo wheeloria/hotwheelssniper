@@ -1,0 +1,30 @@
+name: Hot Wheels Telegram Sniper
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" # Runs automatically every 5 minutes around the clock
+  workflow_dispatch: # Allows you to manually trigger a test run from your GitHub repository actions tab
+
+jobs:
+  run-sniper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        run: cd server && npm install
+
+      - name: Run Tracker
+        env:
+          PORT: 5000
+          PINCODE: ${{ secrets.PINCODE }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SCAN_INTERVAL_SECONDS: 120
+        run: node server/index.js
